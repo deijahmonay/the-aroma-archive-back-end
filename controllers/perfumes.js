@@ -24,6 +24,11 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:perfumeId', async (req, res) => {
+  console.log('Route hit with ID:', req.params.perfumeId);
+  res.json({ message: `Show route with the param ${req.params.perfumeId}`})
+})
+
 
 
 
