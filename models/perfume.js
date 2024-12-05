@@ -1,3 +1,5 @@
+//models/perfume.js
+
 const mongoose = require('mongoose')
 
 const keyNoteSchema = new mongoose.Schema({
@@ -37,7 +39,7 @@ const perfumeSchema = mongoose.Schema({
     required: true,
   },
   duration: {
-    type: Number,
+    type: String,
     required: true,
     enum: ["1-3 hours", "4-6 hours", "7-10 hours", "12+ hours"]
   },
@@ -45,12 +47,7 @@ const perfumeSchema = mongoose.Schema({
     type: String,
     required: true,
     enum: ["Want", "Own"]
-  },
-  user: {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: "User",
-  required: true,
-}
+  }
 })
 
 const Perfume = mongoose.model('Perfume', perfumeSchema)

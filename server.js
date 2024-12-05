@@ -15,7 +15,7 @@ mongoose.connection.on('connected', () => {
 app.use(express.json());
 
 // Start routes here
-app.use('/perfumes')
+app.use('/perfumes', perfumeRouter)
 
 app.listen(3000, () => {
   console.log('The express app is ready!');
