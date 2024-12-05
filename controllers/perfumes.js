@@ -25,8 +25,20 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:perfumeId', async (req, res) => {
-  console.log('Route hit with ID:', req.params.perfumeId);
-  res.json({ message: `Show route with the param ${req.params.perfumeId}`})
+  try{
+    const foundPerfume = await Perfume.findById(req.params.perfumeId)
+    if(!foundPerfume) {
+    return res.status(404).json({ error: 'Perfume not found'})
+      throw new Error('Perfume not found')
+    }
+    res.status(200).json(foundPerfume)
+  }catch(err) {
+    if (res.statusCode === 404) {
+      res.json({ error: error.nessage})
+    } else {
+      res.status(500).json({ error: err.message })
+    }
+  }
 })
 
 
