@@ -15,7 +15,14 @@ router.post('/', async (req, res) => {
   }
 })
 
-
+router.get('/', async (req, res) => {
+  try{
+    const foundPerfumes = await Perfume.find()
+    res.status(200).json(foundPerfumes)
+  }catch(err) {
+    res.status(500).json({ error: err.message })
+  }
+})
 
 
 
