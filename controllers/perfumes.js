@@ -1,7 +1,9 @@
 //controllers/perfumes.js
-const Perfume = require('../models/perfume.js')
 const express = require('express')
+const verifyToken = require('../middleware/verify-token.js')
+const Perfume = require('../models/perfume.js')
 const router = express.Router()
+
 
 
 //Controller + router functions here 
@@ -60,9 +62,9 @@ router.delete('/:perfumeId', async (req, res) => {
 
 router.put('/:perfumeId', async (req, res) => {
   try {
-    const updatedPerfume = await Perfume.findByIdAndUpdate(req.params.perfumeId, req.body, {
-      new: true,
-    });
+    const updatedPerfume = await Perfume.findByIdAndUpdate(req.params.perfumeId, req.body, 
+      { new: true }
+    );
     if (!updatedPerfume){
       res.status(404);
       throw new Error('Perfume not found.')

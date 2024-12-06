@@ -26,6 +26,7 @@ app.use('/users', usersRouter)
 app.use('/profiles', profilesRouter)
 app.use('/perfumes', perfumeRouter)
 
-app.listen(3000, () => {
-  console.log('The express app is ready!');
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`the express app is ready and running on port ${PORT}`)
+})
