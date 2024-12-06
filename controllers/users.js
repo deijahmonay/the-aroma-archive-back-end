@@ -28,4 +28,12 @@ router.post('/signup', async (req, res) => {
   }
 })
 
+router.post('/sign', async (req, res) => {
+  try{
+
+  }catch(err) {
+    
+  }
+})
+
 module.exports = router
