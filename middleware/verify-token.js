@@ -1,4 +1,4 @@
-const { verify } = require("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 
 function verifyToken(req, res, nest) {
   try {
@@ -10,6 +10,5 @@ function verifyToken(req, res, nest) {
     res.status(401).json({ error: 'Invalid token.' })
   }
 };
-
 
 module.exports = verifyToken;
