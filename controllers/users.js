@@ -13,7 +13,6 @@ router.post('/signup', async (req, res) => {
     if (userInDatabase) {
       return res.status(400).json({error: 'Username already taken. Please try another username.'})
     }
-
     const emailInDatabase = await User.findOne({ email: req.body.email })
     if (emailInDatabase) {
       return res.status(400).json({ error: 'Email already taken. Please try another email.'})
@@ -23,7 +22,11 @@ router.post('/signup', async (req, res) => {
       email: req.body.email,
       hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
     })
-    res.status(201).json({ user })
+    const token = jwt.sign(
+      {username: user.username, _id: user.id}, 
+      process.env.JWT_SECRET
+    )
+    res.status(201).json({ user, token })
   }catch(err) {
     res.status(400).json({error: err.message})
   }
