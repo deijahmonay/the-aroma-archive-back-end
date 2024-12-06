@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 
 const testJWTRouter = require('./controllers/test-jwt.js')
+const usersRouter = require('./controllers/users.js')
 const perfumeRouter = require('./controllers/perfumes.js')
 
 app.use(cors())
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // Start routes here
 app.use('/test-jwt', testJWTRouter)
+app.use('/users', usersRouter)
 app.use('/perfumes', perfumeRouter)
 
 app.listen(3000, () => {
