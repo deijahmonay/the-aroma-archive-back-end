@@ -45,7 +45,7 @@ const perfumeSchema = mongoose.Schema({
     required: true,
     enum: ["Want", "Own"],
   },  
-})
+}, { timestamps: true })
 
 const Perfume = mongoose.model('Perfume', perfumeSchema)
 
