@@ -45,7 +45,7 @@ router.delete('/:perfumeId', async (req, res) => {
     const deletedPerfume = await Perfume.findByIdAndDelete(req.params.perfumeId)
     if(!deletedPerfume) {
       res.status(404);
-      throw new Error('Pet not found.')
+      throw new Error('Perfume not found.')
     }
     res.status(200).json(deletedPerfume)
   }catch(err) {
@@ -65,7 +65,7 @@ router.put('/:perfumeId', async (req, res) => {
     });
     if (!updatedPerfume){
       res.status(404);
-      throw new Error('Pet not found.')
+      throw new Error('Perfume not found.')
     }
     res.status(200).json(updatedPerfume)
   } catch (error) {

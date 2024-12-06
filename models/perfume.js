@@ -29,10 +29,7 @@ const perfumeSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  keyNotes: {
-    type: [keyNoteSchema],
-    required: true,
-  },
+  keyNotes: [keyNoteSchema],
   cost: {
     type: Number,
     min: 20,
@@ -46,8 +43,8 @@ const perfumeSchema = mongoose.Schema({
   wantOwnStatus: {
     type: String,
     required: true,
-    enum: ["Want", "Own"]
-  }
+    enum: ["Want", "Own"],
+  },  
 })
 
 const Perfume = mongoose.model('Perfume', perfumeSchema)
