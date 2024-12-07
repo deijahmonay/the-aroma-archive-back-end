@@ -79,4 +79,28 @@ router.put('/:perfumeId', async (req, res) => {
   }
 });
 
+router.post('/:perfumeId/keynote', async (req, res) => {
+  try{
+    // find perfume by id
+    const perfume = await Perfume.findById(req.params.perfumeId)
+    if(!perfume) {
+      res.status(404)
+      throw new Error('Perfume not found')
+    }
+    // add keynote to perfume keyNote
+    perfume.keyNotes.push(req.body)
+    //save it so it works
+    await perfume.save()
+    //return updated perfume
+    const newKeynote = perfume.keyNotes[perfume.keyNotes.length - 1]
+    res.status(201).json(newKeynote)
+  }catch(err) {
+    if (res.statusCode === 404) {
+      res.json({ error: error.message })
+    }else {
+      res.status(500).json({ error: error.message })
+    }
+  }
+})
+
 module.exports = router
