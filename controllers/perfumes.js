@@ -82,24 +82,19 @@ router.put('/:perfumeId', async (req, res) => {
 router.post('/:perfumeId/keynote', async (req, res) => {
   try{
     // find perfume by id
-    const perfume = await Perfume.findById(req.params.perfumeId)
-    if(!perfume) {
-      res.status(404)
-      throw new Error('Perfume not found')
-    }
-    // add keynote to perfume keyNote
-    perfume.keyNotes.push(req.body)
-    //save it so it works
-    await perfume.save()
-    //return updated perfume
-    const newKeynote = perfume.keyNotes[perfume.keyNotes.length - 1]
-    res.status(201).json(newKeynote)
+    const createdPerfume = await Perfume.findById(req.params.perfumeId)
+    // chesck if perfume exists and if not return 404 error
+    if(!createdPerfume) 
+      return res.status(404).json({ message: 'Perfume not found'})
+    //add to perfume keynote
+    createdPerfume.keyNotes.push(req.body)
+    //save updated perfume object to daatbase
+    await createdPerfume.save()
+    // send 201 response (it works!)
+    res.status(201).json(createdPerfume)
   }catch(err) {
-    if (res.statusCode === 404) {
-      res.json({ error: error.message })
-    }else {
-      res.status(500).json({ error: error.message })
-    }
+    // send 400 error if it doesnt work
+    res.status(400).json({ message: err.message})
   }
 })
 
