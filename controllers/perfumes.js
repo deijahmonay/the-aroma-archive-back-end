@@ -126,4 +126,40 @@ router.get('/:perfumeId/keynotes/:keynoteId', async (req, res) => {
   }
 })
 
+router.put('/:perfumeId/keynotes/:keynoteId', async (req, res) => {
+  try{
+    const perfume = await Perfume.findById(req.params.perfumeId)
+    if(!perfume) {
+      return res.status(404).json({ message: 'Perfume not founnd'})
+    }
+    const keynote = perfume.keyNotes.id(req.params.keynoteId)
+    if(!keynote) {
+      return res.status(404).json({ message: 'Keynote not found'})
+    }
+    keynote.set(req.body)
+    await perfume.save()
+    res.status(200).json({ message: 'Keynote update successful', perfume})
+  }catch(err) {
+    res.status(500).json({ message: err.message })
+  }
+})
+
+router.delete('/:perfumeId/keynotes/:keynoteId', async (req, res) => {
+  try{
+    const perfume = await Perfume.findById(req.params.perfumeId)
+    if(!perfume) {
+      return res.status(404).json({ message: 'Perfume not founnd'})
+    }
+    const keynote = perfume.keyNotes.id(req.params.keynoteId)
+    if(!keynote) {
+      return res.status(404).json({ message: 'Keynote not found'})
+    }
+    keynote.remove()
+    await perfume.save()
+    res.status(200).json({ message: 'Keynote was deleted!'})
+  }catch(err) {
+    res.status(500).json({ message: err.message })
+  }
+})
+
 module.exports = router
