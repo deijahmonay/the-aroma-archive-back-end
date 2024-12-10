@@ -10,7 +10,6 @@ const usersRouter = require('./controllers/users.js')
 const profilesRouter = require('./controllers/profiles.js')
 const perfumeRouter = require('./controllers/perfumes.js')
 
-app.use(cors())
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -18,6 +17,7 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+app.use(cors())
 app.use(express.json());
 
 // Start routes here

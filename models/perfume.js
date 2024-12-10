@@ -45,6 +45,11 @@ const perfumeSchema = mongoose.Schema({
     required: true,
     enum: ["Want", "Own"],
   },  
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }
 }, { timestamps: true })
 
 const Perfume = mongoose.model('Perfume', perfumeSchema)

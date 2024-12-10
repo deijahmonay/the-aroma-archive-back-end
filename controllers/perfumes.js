@@ -4,80 +4,72 @@ const verifyToken = require('../middleware/verify-token.js')
 const Perfume = require('../models/perfume.js')
 const router = express.Router()
 
+router.use(verifyToken)
 
-
-//Controller + router functions here 
 router.post('/', async (req, res) => {
-  try{
-    const createdPerfume = await Perfume.create(req.body)
-    res.status(201).json(createdPerfume)
-  }catch(err){
-    res.status(500).json({ error: err.message })
+  try {
+    req.body.author = req.user._id;
+    const perfume = await Perfume.create(req.body)
+    perfume._doc.author = req.user
+    res.status(201).json(perfume)
+  } catch (error) {
+    res.status(500).json(error)
   }
-})
+});
+
 
 router.get('/', async (req, res) => {
-  try{
-    const foundPerfumes = await Perfume.find()
-    res.status(200).json(foundPerfumes)
-  }catch(err) {
-    res.status(500).json({ error: err.message })
+  try {
+    const perfumes = await Perfume.find().populate('author', 'name email').sort({ createdAt: 'desc' });
+    res.status(200).json(perfumes);
+  } catch (error) {
+    res.status(500).json(error);
   }
-})
+});
 
 router.get('/:perfumeId', async (req, res) => {
-  try{
-    const foundPerfume = await Perfume.findById(req.params.perfumeId)
-    if (!foundPerfume) {
-     res.status(404)
-     throw new Error('Perfume not found')
+  try {
+    const perfume = await Perfume.findById(req.params.perfumeId).populate('author', 'name email');
+    if (!perfume) {
+      return res.status(404).send('Perfume not found')
     }
-    res.status(200).json(foundPerfume)
-  }catch(err) {
-    if (res.statusCode === 404) {
-      res.json({ error: err.nessage})
-    } else {
-      res.status(500).json({ error: err.message })
-    }
+    res.status(200).json(perfume)
+  } catch (error) {
+    res.status(500).json(error)
   }
-})
+});
+
 
 router.delete('/:perfumeId', async (req, res) => {
   try{
-    const deletedPerfume = await Perfume.findByIdAndDelete(req.params.perfumeId)
-    if(!deletedPerfume) {
-      res.status(404);
-      throw new Error('Perfume not found.')
+    const perfume = await Perfume.findById(req.params.perfumeId)
+    if(!perfume.author.equals(req.user._id)) {
+      return res.status(403).send('You are not allowed!')
     }
+    const deletedPerfume = await Perfume.findByIdAndDelete(req.params.perfumeId)
     res.status(200).json(deletedPerfume)
   }catch(err) {
-    if (res.statusCode === 404) {
-      res.json({ error: err.message })
-    }else {
       res.status(500).json({error: err.message})
     }
   }
-}
 )
 
 router.put('/:perfumeId', async (req, res) => {
   try {
+    const perfume = await Perfume.findById(req.params.perfumeId)
+
+    if(!perfume.author.equals(req.user._id)){
+      return res.status(403).send("You don't go here, unauthorized!")
+    }
     const updatedPerfume = await Perfume.findByIdAndUpdate(req.params.perfumeId, req.body, 
       { new: true }
-    );
-    if (!updatedPerfume){
-      res.status(404);
-      throw new Error('Perfume not found.')
-    }
+    )
+    updatedPerfume._doc.author = req.user
     res.status(200).json(updatedPerfume)
   } catch (error) {
-    if (res.statusCode === 404) {
-      res.json({ error: error.message })
-    } else {
       res.status(500).json({ error: error.message });
     }
-  }
-});
+  });
 
 router.post('/:perfumeId/keynote', async (req, res) => {
   try{
