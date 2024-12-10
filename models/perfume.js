@@ -21,7 +21,7 @@ const keyNoteSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId, ref: 'User'
   },
-}, {timestamps: true});
+}, {timestamps: true})
 
 const perfumeSchema = mongoose.Schema({
   name: {
@@ -32,7 +32,6 @@ const perfumeSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  keyNotes: [keyNoteSchema],
   cost: {
     type: Number,
     min: 20,
@@ -52,7 +51,8 @@ const perfumeSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-  }
+  },
+  keynotes: [keyNoteSchema]
 }, { timestamps: true })
 
 const Perfume = mongoose.model('Perfume', perfumeSchema)
