@@ -17,8 +17,11 @@ const keyNoteSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["Top Note", "Middle Note", "Base Note"]
-  }
-});
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'User'
+  },
+}, {timestamps: true});
 
 const perfumeSchema = mongoose.Schema({
   name: {
