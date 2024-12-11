@@ -77,7 +77,7 @@ router.put('/:perfumeId', async (req, res) => {
 
 router.delete('/:perfumeId', async (req, res) => {
   try {
-      const hoot = await Perfume.findById(req.params.perfumeId)
+      const perfume = await Perfume.findById(req.params.perfumeId)
 
       if (!perfume.author.equals(req.user._id)){
           return res.status(403).send("You're unauthorized!")

@@ -1,5 +1,3 @@
-//models/perfume.js
-
 const mongoose = require('mongoose')
 
 const keyNoteSchema = new mongoose.Schema({
